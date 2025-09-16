@@ -1,7 +1,7 @@
 # Live Drops Flash-Sale Platform
 
 Excalidraw diagram: 
-https://excalidraw.com/#json=l44R37i053-46TjZJzWpl,LhliHXnIN0HYJ3chZHOG4Q
+https://excalidraw.com/#json=paj5d2AyEzAcq1VwvT1ov,-7-pi3iZPCGYwFPOdWa8xQ
 
 **note** In this system design, each drop is limited to a single product if we change the design so that a drop can include multiple products we then need an inventory service with it's own database to handle stock updates and locking when an order is placed 
 
@@ -175,6 +175,7 @@ Invalidation strategies
  - TTL : each cached object automatically expires after a set of time (good for product info)
  - Write-back: When DB is updated update or invalidate the cashe immediately(good for critical data like stocks)
  
+
 
 
 
