@@ -51,7 +51,7 @@ Product Metrics:
 Business Metric:
 1. Conversion uplift = (Purchases with Typeahead / Total sessions) - baseline conversion rate
 
-**Feasibility:**
+**Feasibility:**  
 For this AI touchpoint, we used the **LLaMA 3.1 8B Instruct via OpenRouter** model because it is low-cost, fast enough to meet the **p95 latency target of 300 ms**, and sufficient for short product queries. There is no need to use larger or more expensive models.  
 Even though semantic search is slightly more costly and has higher latency than simple keyword search, it provides better results and a more meaningful experience for users.  
 Since product names are consistent across languages, Typeahead does not require translation of queries. This ensures fast response times and low cost while still supporting Lebanese users.
@@ -122,6 +122,6 @@ Since product names are consistent across languages, Typeahead does not require 
  Business Metric:
  1. Support contact reduction = (Baseline support contacts - Support contacts handled by AI) / Baseline support contacts × 100
 
- **Feasibility:**
+ **Feasibility:**  
  For this AI touchpoint, we used the **LLaMA 3.1 8B Instruct via OpenRouter** model because it is cost-effective, fast enough for 1,000 requests/day, and can reliably handle FAQ and order queries when properly grounded. The support assistant is feasible because ShopLite already has a structured FAQ markdown and an order-status API, providing the necessary data for accurate responses. All answers are grounded in the ShopLite FAQ and order data to minimize hallucinations and maintain user trust. Human-in-the-loop ensures that questions outside scope or with low-confidence AI answers are handled within the 1-hour SLA.
 
