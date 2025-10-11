@@ -1,0 +1,162 @@
+[
+  {
+    "id": "p01",
+    "title": "Classic White T-Shirt",
+    "price": 14.99,
+    "image": "/images/tshirt-White.jpeg",
+    "tags": ["t-shirt", "casual", "cotton"],
+    "stockQty": 20
+  },
+  {
+    "id": "p02",
+    "title": "Denim Jacket",
+    "price": 59.99,
+    "image": "/images/denim-jacket.jpeg",
+    "tags": ["jacket", "denim", "outerwear"],
+    "stockQty": 8
+  },
+  {
+    "id": "p03",
+    "title": "Black Slim Jeans",
+    "price": 45.5,
+    "image": "/images/black-jeans.jpeg",
+    "tags": ["jeans", "pants", "denim"],
+    "stockQty": 15
+  },
+  {
+    "id": "p04",
+    "title": "Floral Summer Dress",
+    "price": 39.0,
+    "image": "/images/floral-dress.jpeg",
+    "tags": ["dress", "floral", "summer"],
+    "stockQty": 0
+  },
+  {
+    "id": "p05",
+    "title": "Wool Scarf",
+    "price": 19.5,
+    "image": "/images/wool-scarf.jpeg",
+    "tags": ["scarf", "winter", "accessory"],
+    "stockQty": 10
+  },
+  {
+    "id": "p06",
+    "title": "Leather Belt",
+    "price": 25.0,
+    "image": "/images/leather-belt.jpeg",
+    "tags": ["belt", "leather", "accessory"],
+    "stockQty": 5
+  },
+  {
+    "id": "p07",
+    "title": "Running Shoes",
+    "price": 69.99,
+    "image": "/images/running-shoes.jpeg",
+    "tags": ["shoes", "sport", "footwear"],
+    "stockQty": 18
+  },
+  {
+    "id": "p08",
+    "title": "Cotton Hoodie",
+    "price": 49.99,
+    "image": "/images/cotton-hoodie.jpeg",
+    "tags": ["hoodie", "sweatshirt", "casual"],
+    "stockQty": 12
+  },
+  {
+    "id": "p09",
+    "title": "Linen Pants",
+    "price": 35.0,
+    "image": "/images/linen-pants.jpeg",
+    "tags": ["pants", "linen", "summer"],
+    "stockQty": 0
+  },
+  {
+    "id": "p10",
+    "title": "Striped Polo Shirt",
+    "price": 27.5,
+    "image": "/images/striped-polo-shirt.jpeg",
+    "tags": ["polo", "shirt", "casual"],
+    "stockQty": 7
+  },
+  {
+    "id": "p11",
+    "title": "Wool Beanie",
+    "price": 12.99,
+    "image": "/images/beanie.jpeg",
+    "tags": ["beanie", "winter", "accessory"],
+    "stockQty": 25
+  },
+  {
+    "id": "p12",
+    "title": "Long Sleeve Henley",
+    "price": 29.99,
+    "image": "/images/henley.jpeg",
+    "tags": ["shirt", "long-sleeve", "casual"],
+    "stockQty": 9
+  },
+  {
+    "id": "p13",
+    "title": "Pleated Skirt",
+    "price": 33.0,
+    "image": "/images/Pleated-Skirt.jpeg",
+    "tags": ["skirt", "fashion", "casual"],
+    "stockQty": 0
+  },
+  {
+    "id": "p14",
+    "title": "Graphic Tee",
+    "price": 18.0,
+    "image": "/images/graphic-tee.jpeg",
+    "tags": ["t-shirt", "graphic", "casual"],
+    "stockQty": 16
+  },
+  {
+    "id": "p15",
+    "title": "Leather Boots",
+    "price": 89.5,
+    "image": "/images/leather-boots.jpeg",
+    "tags": ["boots", "leather", "footwear"],
+    "stockQty": 6
+  },
+  {
+    "id": "p16",
+    "title": "Raincoat",
+    "price": 65.0,
+    "image": "/images/raincoat.jpeg",
+    "tags": ["coat", "waterproof", "outerwear"],
+    "stockQty": 14
+  },
+  {
+    "id": "p17",
+    "title": "Sport Shorts",
+    "price": 22.0,
+    "image": "/images/sport-shorts.jpeg",
+    "tags": ["shorts", "sport", "activewear"],
+    "stockQty": 30
+  },
+  {
+    "id": "p18",
+    "title": "Denim Skirt",
+    "price": 28.5,
+    "image": "/images/denim-skirt.jpeg",
+    "tags": ["skirt", "denim", "casual"],
+    "stockQty": 4
+  },
+  {
+    "id": "p19",
+    "title": "Puffer Jacket",
+    "price": 79.99,
+    "image": "/images/puffer-jacket.jpeg",
+    "tags": ["jacket", "winter", "outerwear"],
+    "stockQty": 0
+  },
+  {
+    "id": "p20",
+    "title": "Canvas Sneakers",
+    "price": 44.99,
+    "image": "/images/canvas-sneakers.jpeg",
+    "tags": ["sneakers", "casual", "footwear"],
+    "stockQty": 22
+  }
+]

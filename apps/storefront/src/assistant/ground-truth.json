@@ -1,0 +1,122 @@
+[
+  {
+    "id": "Q01",
+    "question": "What is your return policy?",
+    "answer": "We offer a 30-day return policy for all unused items in original packaging. Returns are free for orders over $50. Items must be in resellable condition with tags attached.",
+    "keywords": ["return", "policy", "refund", "30-day", "unused", "packaging"]
+  },
+  {
+    "id": "Q02",
+    "question": "What is the standard and express shipping time ?",
+    "answer": "Standard shipping takes 3-5 business days. Express shipping is available for delivery in 1-2 business days. Processing time is 1-2 business days before shipment.",
+    "keywords": ["shipping", "delivery", "time", "express", "standard", "business days"]
+  },
+  {
+    "id": "Q03",
+    "question": "Do you offer international shipping to other countries?",
+    "answer": "Yes, we ship to over 50 countries worldwide. International shipping costs and delivery times vary by location. Customs fees may apply depending on your country's regulations.",
+    "keywords": ["international", "shipping", "countries", "worldwide", "customs", "fees"]
+  },
+  {
+    "id": "Q04",
+    "question": "What payment methods do you accept?",
+    "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, Apple Pay, and Google Pay. All payments are processed securely.",
+    "keywords": ["payment", "methods", "credit cards", "paypal", "apple pay", "google pay"]
+  },
+  {
+    "id": "Q05",
+    "question": "How can I track my order?",
+    "answer": "You can track your order using the tracking link in your shipping confirmation email. Alternatively, log into your account and view order history for real-time tracking updates.",
+    "keywords": ["track", "order", "tracking", "shipping", "confirmation", "email"]
+  },
+  {
+    "id": "Q06",
+    "question": "Do you offer price matching?",
+    "answer": "Yes, we offer price matching within 7 days of purchase. The item must be identical and in stock at the competitor. Contact support with the competitor's listing for verification.",
+    "keywords": ["price", "matching", "competitor", "price match", "verification"]
+  },
+  {
+    "id": "Q07",
+    "question": "What is your warranty policy?",
+    "answer": "We offer a 1-year manufacturer's warranty on all electronics and a lifetime warranty on craftsmanship defects. Warranty claims require proof of purchase and photos of the issue.",
+    "keywords": ["warranty","policy", "manufacturer", "electronics", "lifetime", "defects", "claims"]
+  },
+  {
+    "id": "Q08",
+    "question": "How do I cancel my order?",
+    "answer": "Orders can be cancelled within 1 hour of placement from your order history. After 1 hour, contact support immediately as the order may already be processing for shipment.",
+    "keywords": ["cancel", "order", "cancellation", "1 hour", "processing", "support"]
+  },
+  {
+    "id": "Q09",
+    "question": "Are your products authentic?",
+    "answer": "Yes, all our products are 100% authentic and sourced directly from manufacturers or authorized distributors. We guarantee the authenticity of every item sold.",
+    "keywords": ["authentic","products", "genuine", "manufacturers", "authorized", "distributors"]
+  },
+  {
+    "id": "Q10",
+    "question": "Do you have a physical store?",
+    "answer": "We are an online-only retailer and do not have physical store locations. This allows us to offer competitive pricing and direct shipping to your doorstep.",
+    "keywords": ["physical", "store", "location", "online", "retailer", "shipping"]
+  },
+  {
+    "id": "Q11",
+    "question": "When is customer service support available?",
+    "answer": "Our customer service team is available Monday-Friday 9AM-6PM EST and Saturday 10AM-4PM EST. Email support is available 24/7 with response within 24 hours.",
+    "keywords": ["customer service", "hours", "support", "available", "email", "response"]
+  },
+  {
+    "id": "Q12",
+    "question": "How do I change my shipping address?",
+    "answer": "Shipping addresses can be changed within 30 minutes of order placement from your order details. After 30 minutes, contact support immediately as changes may not be possible.",
+    "keywords": ["change", "shipping", "address", "30 minutes", "order details"]
+  },
+  {
+    "id": "Q13",
+    "question": "Do you offer gift wrapping?",
+    "answer": "Yes, gift wrapping is available for $4.99 per item. You can select this option during checkout and include a personalized gift message.",
+    "keywords": ["gift", "wrapping", "gift wrap", "message", "checkout"]
+  },
+  {
+    "id": "Q14",
+    "question": "What is your privacy policy?",
+    "answer": "We protect your personal information and never share it with third parties without consent. You can view our complete privacy policy on our website's footer section.",
+    "keywords": ["privacy", "policy", "personal information", "data", "protection"]
+  },
+  {
+    "id": "Q15",
+    "question": "How do I create an account?",
+    "answer": "Click 'Sign Up' in the top navigation and enter your email and password. You can also create an account during checkout by selecting 'Create Account'.",
+    "keywords": ["create", "account", "sign up", "register", "email", "password"]
+  },
+  {
+    "id": "Q16",
+    "question": "Do you offer student discounts?",
+    "answer": "Yes, we offer 10% student discount with valid .edu email verification. The discount applies to full-price items and cannot be combined with other promotions.",
+    "keywords": ["student", "discounts", "edu", "verification", "10%"]
+  },
+  {
+    "id": "Q17",
+    "question": "What if I receive a damaged item?",
+    "answer": "Contact support within 48 hours of delivery with photos of the damaged item and packaging. We will arrange a free return and send a replacement or issue a full refund.",
+    "keywords": ["damaged", "item", "broken", "photos", "replacement", "refund"]
+  },
+  {
+    "id": "Q18",
+    "question": "How do I use a promo code?",
+    "answer": "Enter your promo code in the 'Promo Code' field during checkout and click 'Apply'. The discount will be reflected in your order total before payment.",
+    "keywords": ["promo", "code", "coupon", "discount", "checkout", "apply"]
+  },
+  {
+    "id": "Q19",
+    "question": "Do you have a loyalty program?",
+    "answer": "Yes, our loyalty program offers 1 point per dollar spent. Points can be redeemed for discounts on future purchases. You automatically enroll with your first purchase.",
+    "keywords": ["loyalty", "program", "points", "rewards", "redeem", "discounts"]
+  },
+  {
+    "id": "Q20",
+    "question": "What is your environmental policy?",
+    "answer": "We use eco-friendly packaging materials and offset carbon emissions from shipping. We also partner with environmental organizations and prioritize sustainable suppliers.",
+    "keywords": ["environmental", "policy", "eco-friendly", "packaging", "carbon", "sustainable"]
+  }
+]

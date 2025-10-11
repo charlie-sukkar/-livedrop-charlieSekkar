@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`OrderDate Component > matches snapshot with custom className 1`] = `
+<span
+  class="text-lg font-bold"
+>
+  January 10, 2024
+</span>
+`;
+
+exports[`OrderDate Component > matches snapshot with date and time 1`] = `
+<span
+  class=""
+>
+  January 10, 2024 at 04:30 PM
+</span>
+`;
+
+exports[`OrderDate Component > matches snapshot with date only 1`] = `
+<span
+  class=""
+>
+  January 10, 2024
+</span>
+`;

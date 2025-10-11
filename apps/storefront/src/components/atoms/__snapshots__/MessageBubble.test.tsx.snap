@@ -1,0 +1,198 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MessageBubble > matches snapshot for minimal message 1`] = `
+<div
+  class="flex justify-start mb-4"
+>
+  <div
+    aria-label="Support said: OK"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-gray-200 text-gray-900 rounded-bl-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      OK
+    </p>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble > matches snapshot for support message with all props 1`] = `
+<div
+  class="flex justify-start mb-4"
+>
+  <div
+    aria-label="Support said: Support response"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-gray-200 text-gray-900 rounded-bl-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      Support response
+    </p>
+    <div
+      class="flex justify-between items-center mt-1 text-xs text-gray-500"
+    >
+      <span>
+        2:31 PM
+      </span>
+      <span
+        class="ml-2 bg-black bg-opacity-20 px-1 rounded"
+      >
+        Knowledge Base
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble > matches snapshot for user message with all props 1`] = `
+<div
+  class="flex justify-end mb-4"
+>
+  <div
+    aria-label="You said: User question"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-blue-600 text-white rounded-br-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      User question
+    </p>
+    <div
+      class="flex justify-between items-center mt-1 text-xs text-blue-100"
+    >
+      <span>
+        2:30 PM
+      </span>
+      <span
+        class="ml-2 bg-black bg-opacity-20 px-1 rounded"
+      >
+        User Guide
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble Component > matches snapshot 1`] = `
+<div>
+  <div
+    class="flex justify-end mb-4"
+  >
+    <div
+      aria-label="You said: Hello, this is a test message"
+      class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-blue-600 text-white rounded-br-none
+        "
+      role="text"
+    >
+      <p
+        class="text-sm whitespace-pre-wrap"
+      >
+        Hello, this is a test message
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble Component > matches snapshot for minimal message 1`] = `
+<div
+  class="flex justify-start mb-4"
+>
+  <div
+    aria-label="Support said: OK"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-gray-200 text-gray-900 rounded-bl-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      OK
+    </p>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble Component > matches snapshot for support message 1`] = `
+<div
+  class="flex justify-start mb-4"
+>
+  <div
+    aria-label="Support said: How can I help you today?"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-gray-200 text-gray-900 rounded-bl-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      How can I help you today?
+    </p>
+    <div
+      class="flex justify-between items-center mt-1 text-xs text-gray-500"
+    >
+      <span>
+        2:31 PM
+      </span>
+      <span
+        class="ml-2 bg-black bg-opacity-20 px-1 rounded"
+      >
+        Support KB
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MessageBubble Component > matches snapshot for user message 1`] = `
+<div
+  class="flex justify-end mb-4"
+>
+  <div
+    aria-label="You said: Hello there"
+    class="
+          max-w-xs lg:max-w-md px-4 py-2 rounded-lg
+          bg-blue-600 text-white rounded-br-none
+        "
+    role="text"
+  >
+    <p
+      class="text-sm whitespace-pre-wrap"
+    >
+      Hello there
+    </p>
+    <div
+      class="flex justify-between items-center mt-1 text-xs text-blue-100"
+    >
+      <span>
+        2:30 PM
+      </span>
+      <span
+        class="ml-2 bg-black bg-opacity-20 px-1 rounded"
+      >
+        User Guide
+      </span>
+    </div>
+  </div>
+</div>
+`;
