@@ -598,7 +598,7 @@ ${products.map(p => `• ${p.name} - $${p.price} (${p.stock > 10 ? 'In Stock' : 
 
 `;
     } else {
-      prompt += `No products found matching your search.`;
+      prompt += `JUST SAY : we don't have the desired product, try searching for pants, tops, jackets.`;
     }
   }
 
