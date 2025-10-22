@@ -865,14 +865,6 @@ const blacklist = [
     if (!changed) break; 
   }
 
-  console.log('🔍 APPLYING BLACKLIST...');
-  blacklist.forEach(pattern => {
-    const before = cleaned;
-    cleaned = cleaned.replace(pattern, '');
-    if (before !== cleaned) {
-      console.log('✅ REMOVED PATTERN:', pattern.toString());
-    }
-  });
   
  
   cleaned = cleaned.replace(/^Response:\s*/i, '');
