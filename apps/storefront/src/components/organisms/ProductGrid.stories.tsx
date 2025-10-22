@@ -9,42 +9,47 @@ const meta: Meta<typeof ProductGrid> = {
 export default meta
 type Story = StoryObj<typeof ProductGrid>
 
+// FIXED: Match the actual Product interface
 const sampleProducts = [
   {
-    id: '1',
-    title: 'Wireless Headphones',
+    _id: '1', // changed from 'id'
+    name: 'Wireless Headphones', // changed from 'title'
     price: 199.99,
-    image: '/headphones.jpg',
+    imageUrl: '/headphones.jpg', // changed from 'image'
     description: 'High-quality wireless headphones',
+    category: 'electronics', // added required field
     tags: ['electronics', 'audio'],
-    stockQty: 15
+    stock: 15 // changed from 'stockQty'
   },
   {
-    id: '2', 
-    title: 'Smartphone',
+    _id: '2', // changed from 'id'
+    name: 'Smartphone', // changed from 'title'
     price: 899.99,
-    image: '/phone.jpg',
+    imageUrl: '/phone.jpg', // changed from 'image'
     description: 'Latest smartphone model',
+    category: 'electronics', // added required field
     tags: ['electronics', 'mobile'],
-    stockQty: 8
+    stock: 8 // changed from 'stockQty'
   },
   {
-    id: '3',
-    title: 'Laptop',
+    _id: '3', // changed from 'id'
+    name: 'Laptop', // changed from 'title'
     price: 1299.99,
-    image: '/laptop.jpg',
+    imageUrl: '/laptop.jpg', // changed from 'image'
     description: 'Powerful laptop for work and play',
+    category: 'electronics', // added required field
     tags: ['electronics', 'computers'],
-    stockQty: 5
+    stock: 5 // changed from 'stockQty'
   },
   {
-    id: '4',
-    title: 'Smart Watch',
+    _id: '4', // changed from 'id'
+    name: 'Smart Watch', // changed from 'title'
     price: 299.99,
-    image: '/watch.jpg',
+    imageUrl: '/watch.jpg', // changed from 'image'
     description: 'Feature-rich smartwatch',
+    category: 'electronics', // added required field
     tags: ['electronics', 'wearables'],
-    stockQty: 20
+    stock: 20 // changed from 'stockQty'
   }
 ]
 
