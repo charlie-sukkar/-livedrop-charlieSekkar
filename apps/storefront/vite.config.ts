@@ -15,4 +15,14 @@ test: {
   setupFiles: ['./vitest.setup.ts'],
 },
 
+ esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        noUnusedLocals: false,
+        noUnusedParameters: false,
+        skipLibCheck: true
+      }
+    }
+  }
+
 })
