@@ -20,7 +20,7 @@ export const Default: Story = {
 export const WithInitialSort: Story = {
   args: {
     ...Default.args,
-    initialSort: 'price-asc',
+    initialSort: 'price', // FIXED: Changed from 'price-asc' to match your Product type
   },
 }
 
