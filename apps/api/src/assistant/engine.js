@@ -798,7 +798,7 @@ const blacklist = [
   /\* \* \*[\s\S]*$/i,                     
   /---.*$/i,                              
 
-  /However,[\s\S]*$/i,                    
+                     
 
   /Related resources:.*$/i,
 
