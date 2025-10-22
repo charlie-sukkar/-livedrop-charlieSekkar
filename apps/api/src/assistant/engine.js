@@ -568,11 +568,8 @@ EXACT ANSWER TO COPY:
 "${bestPolicy.answer} [${bestPolicy.id}]"
 
 RULES:
-1. Copy the EXACT text above including the [PolicyID]
-2. DO NOT add any other text, questions, or explanations
-3. DO NOT continue the conversation
-4. DO NOT make up any information
-5. STOP after providing the answer
+  DO NOT add any other text, questions, or explanations
+  STOP after providing the answer
 
 EXAMPLE:
 User: "What is your return policy?"
