@@ -10,13 +10,15 @@ const meta: Meta<typeof ProductDetail> = {
 export default meta;
 type Story = StoryObj<typeof ProductDetail>;
 
+// FIXED: Match the actual Product interface
 const sampleProduct = {
-  id: '1',
-  title: 'Wireless Bluetooth Headphones',
+  _id: '1', // changed from 'id'
+  name: 'Wireless Bluetooth Headphones', // changed from 'title'
   description: 'Premium wireless headphones with active noise cancellation',
   price: 299.99,
-  stockQty: 15,
-  image: '/headphones.jpg',
+  stock: 15, // changed from 'stockQty'
+  imageUrl: '/headphones.jpg', // changed from 'image'
+  category: 'electronics', // added required field
   tags: ['electronics', 'audio', 'wireless', 'premium'],
 };
 
@@ -28,13 +30,13 @@ export const InStock: Story = {
 
 export const OutOfStock: Story = {
   args: {
-    product: { ...sampleProduct, stockQty: 0 },
+    product: { ...sampleProduct, stock: 0 }, // changed from 'stockQty'
   },
 };
 
 export const LowStock: Story = {
   args: {
-    product: { ...sampleProduct, stockQty: 2 },
+    product: { ...sampleProduct, stock: 2 }, // changed from 'stockQty'
   },
 };
 
