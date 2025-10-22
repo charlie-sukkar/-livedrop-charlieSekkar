@@ -22,10 +22,10 @@ intents:
     behavior: "Provide accurate policy information with proper citations from available policies, answer same as the given policy data"
     # response_format: |
     #   DIRECT_ANSWER [PolicyID] 
-    Examples:
-      - "We accept returns within 30 days of delivery [Policy1.1]"
-      - "Standard shipping takes 5-7 business days [Shipping2.1]"
-      - "We accept Visa, MasterCard, and PayPal [Payment3.1]"
+    # Examples:
+    #   - "We accept returns within 30 days of delivery [Policy1.1]"
+    #   - "Standard shipping takes 5-7 business days [Shipping2.1]"
+    #   - "We accept Visa, MasterCard, and PayPal [Payment3.1]"
 
   order_status:
     description: "Handles customer inquiries about the status of their orders"
