@@ -30,7 +30,7 @@
 ### Environment Variable
 
 ```env
-MONGODB_URI=mongodb+srv://user_name:password@cluster0.abc123.mongodb.net/ecommerce_db?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<user_name>:<password>@cluster0.abc123.mongodb.net/ecommerce_db?retryWrites=true&w=majority
 ```
 
 ## Backend Deployment - Railway 
