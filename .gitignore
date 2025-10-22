@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment  
+.env
+.env.local
+!*.env.example
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+.out/
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+.nyc_output

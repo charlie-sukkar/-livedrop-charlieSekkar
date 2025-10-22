@@ -91,3 +91,21 @@ npm build
 ### Execute all test suites
 
 npm test
+
+## 🔄 Week 5 Updates
+
+### Real-time Order Tracking
+
+**Enhanced existing OrderStatus.tsx from Week 4** with:
+
+- **Server-Sent Events (SSE)** for live status updates
+- **Auto-status progression** (PENDING → PROCESSING → SHIPPED → DELIVERED)
+- **Real database integration** (no more mock data)
+- **Persistent status tracking** across page refreshes
+
+**What changed:**
+
+- Same UI component from Week 4
+- Now connected to real backend API
+- Live updates every 5-7 seconds
+- Database-persisted order status

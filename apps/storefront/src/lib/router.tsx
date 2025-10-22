@@ -4,6 +4,8 @@ import ProductPage from '../pages/product';
 import CartPage from '../pages/cart';
 import CheckoutPage from '../pages/checkout';
 import OrderStatusPage from '../pages/orderStatus';
+import SupportAssistantPage from '../pages/assistant';
+import AdminDashboard from '../pages/AdminDashboard';
 
 export const router = createBrowserRouter([
   { 
@@ -25,5 +27,13 @@ export const router = createBrowserRouter([
   { 
     path: '/order/:id',
     element: <OrderStatusPage /> 
+  },
+  {
+    path: "/admin",
+    element: <AdminDashboard/>
+  }, 
+  {
+    path: "/assistant",
+    element: <SupportAssistantPage/>
   },
 ]);

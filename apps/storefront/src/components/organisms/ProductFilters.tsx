@@ -3,10 +3,11 @@ import { Select } from '../atoms/Select';
 import { Tag } from '../atoms/Tag';
 
 interface ProductFiltersProps {
-  onSortChange: (sort: 'price-asc' | 'price-desc' | 'name') => void;
+  onSortChange: (sort: 'price' | 'price-desc' | 'name') => void;
   onTagFilter: (tags: string[]) => void;
   availableTags: string[];
-  initialSort?: 'price-asc' | 'price-desc' | 'name';
+  initialSort?: 'price' | 'price-desc' | 'name';
+  tagsLoading?: boolean; // ✅ Add this line
 }
 
 export const ProductFilters: React.FC<ProductFiltersProps> = ({
@@ -14,9 +15,10 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   onTagFilter,
   availableTags,
   initialSort = 'name',
+  tagsLoading = false // ✅ Add with default value
 }) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'name'>(initialSort);
+  const [sortBy, setSortBy] = useState<'price' | 'price-desc' | 'name'>(initialSort);
 
   const handleTagToggle = (tag: string) => {
     const newSelectedTags = selectedTags.includes(tag)
@@ -28,7 +30,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   };
 
   const handleSortChange = (value: string) => {
-    const sortValue = value as 'price-asc' | 'price-desc' | 'name';
+    const sortValue = value as 'price' | 'price-desc' | 'name';
     setSortBy(sortValue);
     onSortChange(sortValue);
   };
@@ -50,14 +52,27 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
               onClick={() => setSelectedTags([])}
             />
           )}
-          {availableTags.map(tag => (
-            <Tag
-              key={tag}
-              label={tag}
-              isActive={selectedTags.includes(tag)}
-              onClick={() => handleTagToggle(tag)}
-            />
-          ))}
+          
+          {/* ✅ Add loading state for tags */}
+          {tagsLoading ? (
+            // Loading skeleton for tags
+            Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-8 w-20 bg-gray-200 rounded-md animate-pulse"
+              ></div>
+            ))
+          ) : (
+            // Show all available tags
+            availableTags.map(tag => (
+              <Tag
+                key={tag}
+                label={tag}
+                isActive={selectedTags.includes(tag)}
+                onClick={() => handleTagToggle(tag)}
+              />
+            ))
+          )}
         </div>
 
         <div className="flex-shrink-0">
@@ -67,14 +82,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             onChange={(e) => handleSortChange(e.target.value)}
             options={[
               { label: 'Name', value: 'name' },
-              { label: 'Price: Low to High', value: 'price-asc' },
+              { label: 'Price: Low to High', value: 'price' },
               { label: 'Price: High to Low', value: 'price-desc' },
             ]}
             className="w-40" 
           />
         </div>
       </div>
-
 
       {selectedTags.length > 0 && (
         <div className="mb-2 flex flex-wrap gap-2">

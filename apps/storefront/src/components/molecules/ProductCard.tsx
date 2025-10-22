@@ -17,11 +17,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, loading = fal
 
   const handleAddToCart = () => {
     addItem({
-      productId: product.id,
-      title: product.title,
+      productId: product._id,        // ✅ Changed: product.id → product._id
+      title: product.name,           // ✅ Changed: product.title → product.name
       price: product.price,
-      image: product.image,
-      stockQty: product.stockQty,
+      image: product.imageUrl,       // ✅ Changed: product.image → product.imageUrl
+      stockQty: product.stock,       // ✅ Changed: product.stockQty → product.stock
     });
   };
 
@@ -41,15 +41,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, loading = fal
   return (
     <article
       className="bg-white  rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
-      aria-labelledby={`product-title-${product.id}`}
+      aria-labelledby={`product-title-${product._id}`}  // ✅ Changed: product.id → product._id
     >
       <Link 
-        to={`/p/${product.id}`} 
+        to={`/p/${product._id}`}  // ✅ Changed: product.id → product._id
         className="relative aspect-square bg-gray-100 block"
       >
         <img
-          src={product.image}
-          alt={product.title}
+          src={product.imageUrl}  // ✅ Changed: product.image → product.imageUrl
+          alt={product.name}      // ✅ Changed: product.title → product.name
           className="object-cover w-full h-full"
           loading="lazy"
         />
@@ -57,12 +57,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, loading = fal
 
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex-grow">
-          <Link to={`/p/${product.id}`}>
+          <Link to={`/p/${product._id}`}>  {/* ✅ Changed: product.id → product._id */}
             <h3
-              id={`product-title-${product.id}`}
+              id={`product-title-${product._id}`}  // ✅ Changed: product.id → product._id
               className="font-semibold text-lg mb-2 line-clamp-2 hover:text-blue-600 transition-colors"
             >
-              {product.title}
+              {product.name}  {/* ✅ Changed: product.title → product.name */}
             </h3>
           </Link>
 
@@ -80,11 +80,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, loading = fal
         <div className="flex items-center justify-between mt-auto">
          <PriceDisplay amount={product.price} />
          <div className="flex items-center gap-2">
-            <StockIndicator stockQty={product.stockQty} showBackground={false} showPulse={false} />
+            <StockIndicator stockQty={product.stock} showBackground={false} showPulse={false} />  {/* ✅ Changed: product.stockQty → product.stock */}
             <Button
               onClick={handleAddToCart}
-              disabled={product.stockQty === 0}
-              aria-label={`Add ${product.title} to cart`}
+              disabled={product.stock === 0}  // ✅ Changed: product.stockQty → product.stock
+              aria-label={`Add ${product.name} to cart`}  // ✅ Changed: product.title → product.name
               size="sm"
             >
               Add to Cart

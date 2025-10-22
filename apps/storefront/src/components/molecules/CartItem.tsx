@@ -22,15 +22,15 @@ export const CartItem: React.FC<CartItemProps> = ({
       aria-label={`${item.title}, quantity: ${item.quantity}, price: ${formatCurrency(item.price)}`}
     >
       <img
-        src={item.image}
-        alt={item.title}
+        src={item.image}  // This should match what's stored in your cart
+        alt={item.title}  // This should match what's stored in your cart
         className="w-16 h-16 object-cover rounded"
         loading="lazy"
       />
       
       <div className="flex-1 min-w-0">
         <h4 className="text-sm font-medium text-gray-900 truncate">
-          {item.title}
+          {item.title}  {/* This should match what's stored in your cart */}
         </h4>
         <p className="text-sm text-gray-500">{formatCurrency(item.price)} each</p>
         
@@ -56,7 +56,7 @@ export const CartItem: React.FC<CartItemProps> = ({
             variant="outline"
             size="sm"
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            disabled={item.quantity >= item.stockQty}
+            disabled={item.quantity >= item.stockQty}  // This should match what's stored in your cart
             aria-label={`Increase quantity of ${item.title}`}
           >
             +

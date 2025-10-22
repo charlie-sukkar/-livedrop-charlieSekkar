@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrderStatus, seedOrder } from '../lib/api';
+import { getOrderStatus } from '../lib/api';
 import { OrderHeader } from '../components/molecules/OrderHeader';
 import { OrderTimeline } from '../components/molecules/OrderTimeline';
 import { ShippingInfo } from '../components/molecules/ShippingInfo';
@@ -9,6 +9,19 @@ import { OrderStatusLayout } from '../components/templates/OrderStatusLayout';
 import { Button } from '../components/atoms/Button';
 import { SupportButton } from '../components/molecules/SupportButton';
 import { Icon } from '../components/atoms/Icon';
+import type { OrderStatusEvent } from '../lib/sse-client';
+import { OrderSSEClient } from '../lib/sse-client';
+
+const mapFromBackendStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    'PENDING': 'Placed',
+    'PROCESSING': 'Packed',
+    'SHIPPED': 'Shipped', 
+    'DELIVERED': 'Delivered',
+    'NotFound': 'NotFound'
+  };
+  return statusMap[status] || status;
+};
 
 export const OrderStatusPage: React.FC = () => {
   const { id: orderId } = useParams<{ id: string }>();
@@ -16,53 +29,133 @@ export const OrderStatusPage: React.FC = () => {
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sseConnected, setSseConnected] = useState(false);
+  
+  // Reference to track SSE client
+  const sseClientRef = useRef<OrderSSEClient | null>(null);
+  const hasOrderDataRef = useRef(false);
 
-  useEffect(() => {
-    const fetchOrderStatus = async () => {
-      if (!orderId) {
-        setError('Order ID is required');
-        setLoading(false);
-        return;
-      }
+  // Fetch initial order data
+  // Fetch initial order data
+useEffect(() => {
+  const fetchOrderStatus = async () => {
+    if (!orderId) {
+      setError('Order ID is required');
+      setLoading(false);
+      return;
+    }
 
-      try {
-        setLoading(true);
-        const orderData = await getOrderStatus(orderId);
-        
-        if (orderData.status === 'NotFound') {
-          setError('Order not found');
-        } else {
-          setOrder(orderData);
-        }
-      } catch (err) {
-        setError('Failed to fetch order status');
-        console.error('Error fetching order:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrderStatus();
-  }, [orderId]);
-
-  // Demo function to simulate status updates (for development only)
-  const simulateStatusUpdate = async (newStatus: 'Packed' | 'Shipped' | 'Delivered', carrier?: string, eta?: string) => {
-    if (!orderId) return;
-    
     try {
-      seedOrder(orderId, newStatus, carrier, eta);
-      const updatedOrder = await getOrderStatus(orderId);
-      setOrder(updatedOrder);
-      alert(`Order status updated to: ${newStatus}`);
+      setLoading(true);
+      console.log('🔍 Fetching order:', orderId);
+      
+      const orderData = await getOrderStatus(orderId);
+      console.log('✅ Order data received:', orderData);
+      
+      // ✅ FIX: Remove the 'NotFound' check since getOrderStatus throws errors
+      setOrder(orderData);
+      hasOrderDataRef.current = true;
+      
     } catch (err) {
-      console.error('Error updating order status:', err);
+      console.error('❌ Error fetching order:', err);
+      // ✅ FIX: This will catch the "Order not found" error from getOrderStatus
+      setError('Order not found');
+    } finally {
+      setLoading(false);
     }
   };
 
+  fetchOrderStatus();
+}, [orderId]);
+
+// Debug: Check why SSE might not be connecting
+// console.log('🔍 DEBUG - Order check:', {
+//   hasOrder: !!order,
+//   hasOrderId: !!orderId,
+//   orderStatus: order?.status,
+//   shouldConnect: !!(order && orderId && order.status !== 'DELIVERED')
+// });
+
+// Set up SSE connection when order data is available
+// Set up SSE connection when order data is available
+// Set up SSE connection when order data is available
+useEffect(() => {
+  // Don't connect if order is already delivered or no order
+  if (!order || !orderId || order.status === 'DELIVERED' || order.status === 'Delivered') {
+    return;
+  }
+  
+  // Prevent multiple SSE clients
+  if (sseClientRef.current) {
+    return;
+  }
+
+  console.log('🎯 Setting up SSE connection for order:', orderId);
+
+  const handlers = {
+    onStatusUpdate: (data: OrderStatusEvent) => {
+      console.log('🔄 SSE Status Update:', data);
+      
+      setOrder((prevOrder: any) => ({
+        ...prevOrder,
+        status: mapFromBackendStatus(data.status),
+        carrier: data.carrier,
+        eta: data.estimatedDelivery,
+      }));
+
+      // Stop reconnecting if order is delivered
+      if (data.status === 'DELIVERED') {
+        console.log('✅ Order delivered, preventing future reconnections');
+        if (sseClientRef.current) {
+          sseClientRef.current.disconnect();
+          sseClientRef.current = null;
+        }
+      }
+    },
+    
+    onComplete: () => {
+      console.log('🔌 SSE Connection completed');
+      setSseConnected(false);
+    },
+    
+    onError: (error: Error | Event) => {
+      console.error('❌ SSE Connection error:', error);
+      setSseConnected(false);
+    },
+    
+    onReconnect: () => {
+      console.log('🔄 SSE Reconnecting...');
+      setSseConnected(false);
+    },
+
+    onMessage: (data: any) => {
+      // Handle 'connected' event from backend
+      if (data.message && data.message.includes('SSE Connected')) {
+        console.log('✅ SSE Connected event received');
+        setSseConnected(true);
+      }
+    }
+  };
+
+  try {
+    sseClientRef.current = new OrderSSEClient(orderId, handlers);
+    sseClientRef.current.connect();
+  } catch (error) {
+    console.error('❌ Failed to create SSE client:', error);
+  }
+
+  // Cleanup on unmount
+  return () => {
+    if (sseClientRef.current) {
+      sseClientRef.current.disconnect();
+      sseClientRef.current = null;
+    }
+    setSseConnected(false);
+  };
+}, [orderId, order?._id]); // ✅ Only depend on orderId and order existence
   const handleBackToHome = () => {
     navigate('/');
   };
-
 
   if (loading) {
     return (
@@ -90,7 +183,6 @@ export const OrderStatusPage: React.FC = () => {
             <Button onClick={handleBackToHome} variant="primary">
               Back to Home
             </Button>
-          
           </div>
         </div>
       </div>
@@ -99,6 +191,13 @@ export const OrderStatusPage: React.FC = () => {
 
   return (
     <>
+      {sseConnected && (
+        <div className="fixed top-4 right-4 bg-green-100 border border-green-300 text-green-800 px-3 py-2 rounded-lg text-sm z-50 flex items-center gap-2">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          Live updates connected
+        </div>
+      )}
+
       <OrderStatusLayout
         header={
           <OrderHeader
@@ -135,8 +234,6 @@ export const OrderStatusPage: React.FC = () => {
       <div className="container mx-auto px-4 max-w-6xl mt-8 pb-12">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-
-            
             <Button
               variant="outline"
               size="lg"
@@ -148,39 +245,6 @@ export const OrderStatusPage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* DEMO ONLY: Status Update Controls - Remove in production */}
-      {
-        <div className="fixed bottom-4 left-4 bg-yellow-100 border border-yellow-300 rounded-lg p-4 max-w-sm z-50">
-          <h3 className="font-semibold text-yellow-800 mb-2">Demo Controls</h3>
-          <p className="text-yellow-700 text-sm mb-3">
-            Update order status for testing:
-          </p>
-          <div className="flex flex-col gap-2">
-            <Button 
-              size="sm" 
-              variant="outline"
-              onClick={() => simulateStatusUpdate('Packed')}
-            >
-              Mark as Packed
-            </Button>
-            <Button 
-              size="sm" 
-              variant="outline"
-              onClick={() => simulateStatusUpdate('Shipped', 'UPS', 'Tomorrow')}
-            >
-              Mark as Shipped
-            </Button>
-            <Button 
-              size="sm" 
-              variant="outline"
-              onClick={() => simulateStatusUpdate('Delivered')}
-            >
-              Mark as Delivered
-            </Button>
-          </div>
-        </div>
-      }
     </>
   );
 };

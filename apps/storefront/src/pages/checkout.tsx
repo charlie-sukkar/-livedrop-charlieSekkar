@@ -6,26 +6,43 @@ import { formatCurrency } from '../lib/format';
 import { placeOrder } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
 import { PriceDisplay } from '../components/atoms/PriceDisplay';
+import { useUser } from '../contexts/UserContext';
 
 export const CheckoutPage: React.FC = () => {
   const { items, getTotalPrice, clearCart } = useCartStore();
   const navigate = useNavigate();
+  const { customer } = useUser(); // ✅ GET LOGGED-IN CUSTOMER
 
   const handlePlaceOrder = async () => {
+    // ✅ CHECK IF USER IS LOGGED IN
+    if (!customer) {
+      alert('Please login to place an order');
+      navigate('/login'); // Redirect to login
+      return;
+    }
+
     try {
       const orderItems = items.map(item => ({
         productId: item.productId,
         quantity: item.quantity
       }));
 
-      const { orderId } = await placeOrder(orderItems);
+      // ✅ USE REAL API WITH CUSTOMER ID
+      const result = await placeOrder(orderItems, customer._id);
       
       clearCart();
       
-      navigate(`/order/${orderId}`);
+      // ✅ REDIRECT TO REAL ORDER TRACKING
+      navigate(`/order/${result.orderId}`);
     } catch (error) {
-      console.error('Failed to place order:', error);
-      alert('Failed to place order. Please try again.');
+  console.error('Failed to place order:', error);
+  
+  // ✅ SHOW THE SPECIFIC ERROR MESSAGE
+  if (error instanceof Error) {
+    alert(error.message); // This will show "Insufficient stock for Blazer. Available: -2, Requested: 3"
+  } else {
+    alert('Failed to place order. Please try again.');
+  }
     }
   };
 
@@ -45,6 +62,15 @@ export const CheckoutPage: React.FC = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
           <p className="text-gray-600 mt-2">Review your order and place it</p>
+          
+          {/* ✅ SHOW CUSTOMER INFO */}
+          {customer && (
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-800">
+                <strong>Ordering as:</strong> {customer.name} ({customer.email})
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
@@ -110,9 +136,9 @@ export const CheckoutPage: React.FC = () => {
                 onClick={handlePlaceOrder}
                 className="w-full py-3 text-lg"
                 aria-label="Place your order"
-                disabled={items.length === 0}
+                disabled={items.length === 0 || !customer} // ✅ DISABLE IF NO CUSTOMER
               >
-                Place Order
+                {!customer ? 'Please Login First' : 'Place Order'}
               </Button>
 
               <p className="text-xs text-gray-500 text-center mt-3">

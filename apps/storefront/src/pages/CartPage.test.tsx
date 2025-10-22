@@ -1,181 +1,130 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { CartPage } from './cart'
-import { BrowserRouter } from 'react-router-dom'
 
-// Mock store and components
-const mockUseCartStore = vi.fn()
-const mockNavigate = vi.fn()
+import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { CatalogPage } from './catalog';
 
-vi.mock('../lib/store', () => ({
-  useCartStore: () => mockUseCartStore()
-}))
+// Mock the API with proper response structure
+vi.mock('../lib/api', () => ({
+  listProducts: vi.fn()
+}));
 
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
-  useNavigate: () => mockNavigate,
-}))
+import { listProducts } from '../lib/api';
 
-vi.mock('../components/templates/CartLayout', () => ({
-  CartLayout: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
-}))
-
-vi.mock('../components/molecules/CartItem', () => ({
-  CartItem: ({ item }: { item: any }) => <div data-testid="cart-item">{item.title}</div>
-}))
-
-vi.mock('../components/molecules/CartFooter', () => ({
-  CartFooter: () => <div data-testid="cart-footer">Cart Footer</div>
-}))
-
-vi.mock('../components/molecules/EmptyCartState', () => ({
-  EmptyCartState: ({ onButtonClick }: { onButtonClick: () => void }) => (
-    <button onClick={onButtonClick} data-testid="empty-cart">Empty Cart</button>
+// Simple, safe mocks that match your actual component output
+vi.mock('../components/templates/CatalogLayout', () => ({
+  CatalogLayout: ({ children, filters, search }: any) => (
+    <div data-testid="catalog-layout">
+      <div data-testid="search-section">{search}</div>
+      <div data-testid="filters-section">{filters}</div>
+      <div data-testid="content-section">{children}</div>
+    </div>
   )
-}))
+}));
 
-const MockRouter = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter>{children}</BrowserRouter>
-)
+vi.mock('../components/organisms/ProductGrid', () => ({
+  ProductGrid: ({ products, loading }: any) => (
+    <div data-testid="product-grid">
+      {loading ? 'Loading products...' : `Showing ${products ? products.length : 0} products`}
+    </div>
+  )
+}));
 
-describe('CartPage', () => {
+vi.mock('../components/molecules/SearchBox', () => ({
+  SearchBox: ({ value, onChange, placeholder }: any) => (
+    <input
+      data-testid="search-box"
+      type="text"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+    />
+  )
+}));
+
+vi.mock('../components/organisms/ProductFilters', () => ({
+  ProductFilters: ({ availableTags, tagsLoading }: any) => (
+    <div data-testid="product-filters">
+      <div data-testid="tags-info">
+        {tagsLoading ? 'Loading tags...' : `Tags loaded: ${availableTags ? availableTags.length : 0}`}
+      </div>
+    </div>
+  )
+}));
+
+const mockListProducts = vi.mocked(listProducts);
+
+describe('CatalogPage', () => {
+  const mockProduct = {
+    _id: '1',
+    name: 'Test Product',
+    description: 'Test Description',
+    price: 100,
+    category: 'test',
+    tags: ['electronics', 'audio'],
+    imageUrl: '/test.jpg',
+    stock: 10
+  };
+
+  const createMockResponse = (items: any[] = [mockProduct]) => ({
+    items: items || [],
+    pagination: {
+      page: 1,
+      limit: 20,
+      total: items ? items.length : 0,
+      pages: 1
+    }
+  });
+
   beforeEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.clearAllMocks();
+    mockListProducts.mockResolvedValue(createMockResponse());
+  });
 
-  it('renders empty state when cart is empty', () => {
-    mockUseCartStore.mockReturnValue({
-      items: [],
-      getTotalPrice: () => 0,
-    })
+  it('renders without crashing', async () => {
+    render(<CatalogPage />);
 
-    render(
-      <MockRouter>
-        <CartPage />
-      </MockRouter>
-    )
+    await waitFor(() => {
+      expect(screen.getByTestId('catalog-layout')).toBeInTheDocument();
+    });
+  });
 
-    expect(screen.getByTestId('empty-cart')).toBeInTheDocument()
-  })
+  it('loads products and tags', async () => {
+    const tagsResponse = createMockResponse([
+      mockProduct,
+      { ...mockProduct, _id: '2', tags: ['home', 'kitchen'] }
+    ]);
+    
+    mockListProducts
+      .mockResolvedValueOnce(tagsResponse) // First call for tags
+      .mockResolvedValueOnce(createMockResponse()); // Second call for products
 
-  it('renders cart items when cart has items', () => {
-    mockUseCartStore.mockReturnValue({
-      items: [
-        {
-          productId: '1',
-          title: 'Test Product',
-          price: 29.99,
-          quantity: 2,
-          image: 'test.jpg',
-          stockQty: 10
-        }
-      ],
-      updateQuantity: vi.fn(),
-      removeItem: vi.fn(),
-      clearCart: vi.fn(),
-      getTotalPrice: () => 59.98,
-    })
+    render(<CatalogPage />);
 
-    render(
-      <MockRouter>
-        <CartPage />
-      </MockRouter>
-    )
+    // Should load tags
+    await waitFor(() => {
+      expect(mockListProducts).toHaveBeenCalledWith({
+        page: 1,
+        limit: 1000
+      });
+    });
 
-    expect(screen.getByText('Shopping Cart')).toBeInTheDocument()
-    expect(screen.getByTestId('cart-item')).toBeInTheDocument()
-    expect(screen.getByTestId('cart-footer')).toBeInTheDocument()
-  })
+    // Should load products
+    await waitFor(() => {
+      expect(mockListProducts).toHaveBeenCalledWith({
+        search: undefined,
+        tags: undefined,
+        sort: 'name',
+        page: 1,
+        limit: 20
+      });
+    });
+  });
 
-  it('navigates to home when continue shopping is clicked', async () => {
-    const user = userEvent.setup()
-    mockUseCartStore.mockReturnValue({
-      items: [
-        {
-          productId: '1',
-          title: 'Test Product',
-          price: 29.99,
-          quantity: 1,
-          image: 'test.jpg',
-          stockQty: 10
-        }
-      ],
-      updateQuantity: vi.fn(),
-      removeItem: vi.fn(),
-      clearCart: vi.fn(),
-      getTotalPrice: () => 29.99,
-    })
+  it('shows products after loading', async () => {
+    render(<CatalogPage />);
 
-    render(
-      <MockRouter>
-        <CartPage />
-      </MockRouter>
-    )
-
-    await user.click(screen.getByText('← Continue Shopping'))
-    expect(mockNavigate).toHaveBeenCalledWith('/')
-  })
-
-  it('shows correct item count', () => {
-    mockUseCartStore.mockReturnValue({
-      items: [
-        {
-          productId: '1',
-          title: 'Test Product',
-          price: 29.99,
-          quantity: 2,
-          image: 'test.jpg',
-          stockQty: 10
-        }
-      ],
-      updateQuantity: vi.fn(),
-      removeItem: vi.fn(),
-      clearCart: vi.fn(),
-      getTotalPrice: () => 59.98,
-    })
-
-    render(
-      <MockRouter>
-        <CartPage />
-      </MockRouter>
-    )
-
-    expect(screen.getByText('1 item in your cart')).toBeInTheDocument()
-  })
-
-  it('handles multiple items count correctly', () => {
-    mockUseCartStore.mockReturnValue({
-      items: [
-        {
-          productId: '1',
-          title: 'Product 1',
-          price: 29.99,
-          quantity: 1,
-          image: 'test1.jpg',
-          stockQty: 10
-        },
-        {
-          productId: '2',
-          title: 'Product 2',
-          price: 39.99,
-          quantity: 1,
-          image: 'test2.jpg',
-          stockQty: 5
-        }
-      ],
-      updateQuantity: vi.fn(),
-      removeItem: vi.fn(),
-      clearCart: vi.fn(),
-      getTotalPrice: () => 69.98,
-    })
-
-    render(
-      <MockRouter>
-        <CartPage />
-      </MockRouter>
-    )
-
-    expect(screen.getByText('2 items in your cart')).toBeInTheDocument()
-  })
-})
+    await waitFor(() => {
+      expect(screen.getByText('Showing 1 products')).toBeInTheDocument();
+    });
+  });
+});

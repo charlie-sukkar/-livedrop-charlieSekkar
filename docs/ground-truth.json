@@ -1,0 +1,107 @@
+[
+  {
+    "id": "Policy1.1",
+    "question": "What is your return policy?",
+    "answer": "We accept returns within 30 days of delivery as long as the items are unused, unwashed, and include original tags and packaging. Refunds are processed to the original payment method within 5–7 business days.",
+    "category": "returns",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Policy1.2",
+    "question": "How do I start a return or exchange?",
+    "answer": "To start a return or exchange, go to your order history, select the item, and click 'Request Return'. You will receive a prepaid return label by email within 24 hours.",
+    "category": "returns",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.1",
+    "question": "What are your shipping options?",
+    "answer": "We offer Standard Shipping (5–7 business days, $4.99), Express Shipping (2–3 business days, $9.99), and Free Shipping for orders over $75.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Shipping2.2",
+    "question": "Do you ship internationally?",
+    "answer": "Yes, we currently ship to over 20 countries. International shipping rates vary by destination and will be calculated at checkout.",
+    "category": "shipping",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+  "id": "Shipping2.3",
+  "question": "What happens if I'm not home for delivery?",
+  "answer": "If you're not available, the carrier will leave a delivery attempt notice. You can reschedule delivery, pick up from their local facility, or authorize package leave with instructions in your tracking portal.",
+  "category": "shipping",
+  "lastUpdated": "2025-10-20T00:00:00Z"
+  },
+  {
+    "id": "Payment3.1",
+    "question": "What payment methods do you accept?",
+    "answer": "We accept Visa, MasterCard, American Express, PayPal, and Apple Pay. All transactions are processed securely using encrypted connections.",
+    "category": "payment",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Payment3.2",
+    "question": "Can I pay with cash on delivery?",
+    "answer": "Cash on delivery is available only for domestic orders under $150. Select this option at checkout if eligible.",
+    "category": "payment",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Discount4.1",
+    "question": "Do you offer student or first-time buyer discounts?",
+    "answer": "Yes, first-time buyers receive a 10% discount on their first order using the code WELCOME10. Students can apply for a 15% discount through our Student Rewards page.",
+    "category": "discounts",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Discount4.2",
+    "question": "Can I use more than one promo code at checkout?",
+    "answer": "Only one promo code can be used per order. Gift cards, however, may be combined with promo codes.",
+    "category": "discounts",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Privacy5.1",
+    "question": "How do you handle my personal information?",
+    "answer": "We store customer data securely and use it only to process orders, improve services, and communicate updates. We never sell or share data with third parties without consent.",
+    "category": "privacy",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Privacy5.2",
+    "question": "How can I delete my account and data?",
+    "answer": "You can request account deletion anytime by emailing support@freshFit.com. All personal data will be removed within 7 days, as required by GDPR compliance.",
+    "category": "privacy",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Security6.1",
+    "question": "Is my payment information secure?",
+    "answer": "Yes, all transactions are protected with SSL encryption and verified by PCI DSS standards to ensure complete payment security.",
+    "category": "security",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Security6.2",
+    "question": "How do you protect user accounts from unauthorized access?",
+    "answer": "We use multi-layer authentication, session timeouts, and encrypted password storage to protect user accounts.",
+    "category": "security",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Support7.1",
+    "question": "How can I contact customer support?",
+    "answer": "Our support team is available Monday to Friday, 9 AM to 6 PM. You can reach us via the live chat on our website or by emailing support@freshFit.com.",
+    "category": "support",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  },
+  {
+    "id": "Support7.2",
+    "question": "Do you have a loyalty or rewards program?",
+    "answer": "Yes, members earn 1 point per $1 spent. Points can be redeemed for discounts or free shipping on future orders.",
+    "category": "support",
+    "lastUpdated": "2025-10-01T00:00:00Z"
+  }
+]

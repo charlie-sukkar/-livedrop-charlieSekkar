@@ -1,23 +1,34 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { OrderStatusPage } from './orderStatus' // Fixed import path
+import { OrderStatusPage } from './orderStatus'
 import { BrowserRouter } from 'react-router-dom'
 
 // Mock dependencies
 const mockGetOrderStatus = vi.fn()
-const mockSeedOrder = vi.fn()
 const mockNavigate = vi.fn()
 
 vi.mock('../lib/api', () => ({
   getOrderStatus: (id: string) => mockGetOrderStatus(id),
-  seedOrder: (id: string, status: string, carrier?: string, eta?: string) => mockSeedOrder(id, status, carrier, eta)
 }))
 
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
-  useNavigate: () => mockNavigate,
-  useParams: () => ({ id: 'ORD-123' }),
+// Mock useParams
+const mockUseParams = vi.fn()
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom')
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useParams: () => mockUseParams(),
+  }
+})
+
+// Mock SSE client to prevent connection attempts during tests
+vi.mock('../lib/sse-client', () => ({
+  OrderSSEClient: vi.fn().mockImplementation(() => ({
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+  })),
 }))
 
 // Mock child components
@@ -52,6 +63,26 @@ vi.mock('../components/organisms/OrderDetails', () => ({
   OrderDetails: () => <div>Order Details</div>
 }))
 
+vi.mock('../components/atoms/Button', () => ({
+  Button: ({ children, onClick, variant, size, className }: any) => (
+    <button 
+      onClick={onClick} 
+      className={`${variant} ${size} ${className}`}
+      data-testid="button"
+    >
+      {children}
+    </button>
+  )
+}))
+
+vi.mock('../components/atoms/Icon', () => ({
+  Icon: ({ className, d }: any) => (
+    <svg className={className} data-testid="icon">
+      <path d={d} />
+    </svg>
+  )
+}))
+
 const MockRouter = ({ children }: { children: React.ReactNode }) => (
   <BrowserRouter>
     {children}
@@ -60,15 +91,27 @@ const MockRouter = ({ children }: { children: React.ReactNode }) => (
 
 describe('OrderStatusPage', () => {
   const mockOrder = {
-    status: 'Processing',
-    createdAt: 1700000000000,
+    _id: 'ORD-123',
+    status: 'PROCESSING',
+    createdAt: '2024-01-01T00:00:00.000Z',
     carrier: 'UPS',
-    eta: '2024-01-15'
+    estimatedDelivery: '2024-01-15',
+    items: [
+      {
+        productId: '1',
+        name: 'Test Product',
+        price: 29.99,
+        quantity: 2
+      }
+    ],
+    total: 59.98
   }
 
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetOrderStatus.mockResolvedValue(mockOrder)
+    // Default mock for useParams
+    mockUseParams.mockReturnValue({ id: 'ORD-123' })
   })
 
   it('renders loading state initially', () => {
@@ -108,16 +151,20 @@ describe('OrderStatusPage', () => {
       </MockRouter>
     )
 
+    // Wait for the order to load
     await waitFor(() => {
       expect(screen.getByText('Back to Home')).toBeInTheDocument()
     })
 
-    await user.click(screen.getByText('Back to Home'))
+    // Find and click the back button
+    const backButtons = screen.getAllByText('Back to Home')
+    await user.click(backButtons[0]) // Click the first back button
+
     expect(mockNavigate).toHaveBeenCalledWith('/')
   })
 
   it('shows error state when order not found', async () => {
-    mockGetOrderStatus.mockRejectedValue(new Error('Not found'))
+    mockGetOrderStatus.mockRejectedValue(new Error('Order not found'))
 
     render(
       <MockRouter>
@@ -127,7 +174,23 @@ describe('OrderStatusPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Order Not Found')).toBeInTheDocument()
-      expect(screen.getByText('Failed to fetch order status')).toBeInTheDocument()
+      expect(screen.getByText('Order not found')).toBeInTheDocument()
+    })
+  })
+
+  it('shows error state when no order ID provided', async () => {
+    // Mock useParams to return no ID
+    mockUseParams.mockReturnValue({ id: undefined })
+
+    render(
+      <MockRouter>
+        <OrderStatusPage />
+      </MockRouter>
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Order Not Found')).toBeInTheDocument()
+      expect(screen.getByText('Order ID is required')).toBeInTheDocument()
     })
   })
 
@@ -143,10 +206,10 @@ describe('OrderStatusPage', () => {
     })
   })
 
-  it('shows demo controls and updates status', async () => {
-    const user = userEvent.setup()
-    const updatedOrder = { ...mockOrder, status: 'Shipped' }
-    mockGetOrderStatus.mockResolvedValueOnce(mockOrder).mockResolvedValueOnce(updatedOrder)
+  it('shows fallback error message with order ID when no specific error', async () => {
+    // Mock useParams to return an ID but getOrderStatus to return no order (null)
+    mockUseParams.mockReturnValue({ id: 'ORD-123' })
+    mockGetOrderStatus.mockResolvedValue(null) // Simulate no order data returned
 
     render(
       <MockRouter>
@@ -155,14 +218,62 @@ describe('OrderStatusPage', () => {
     )
 
     await waitFor(() => {
-      expect(screen.getByText('Demo Controls')).toBeInTheDocument()
-      expect(screen.getByText('Mark as Shipped')).toBeInTheDocument()
+      expect(screen.getByText('Order Not Found')).toBeInTheDocument()
+      // This should show the fallback message with order ID
+      expect(screen.getByText(/ORD-123/)).toBeInTheDocument()
     })
+  })
 
-    await user.click(screen.getByText('Mark as Shipped'))
+  it('handles different order statuses correctly', async () => {
+    const deliveredOrder = {
+      ...mockOrder,
+      status: 'DELIVERED'
+    }
+    mockGetOrderStatus.mockResolvedValue(deliveredOrder)
+
+    render(
+      <MockRouter>
+        <OrderStatusPage />
+      </MockRouter>
+    )
 
     await waitFor(() => {
-      expect(mockSeedOrder).toHaveBeenCalledWith('ORD-123', 'Shipped', 'UPS', 'Tomorrow')
+      expect(screen.getByTestId('header')).toBeInTheDocument()
+      expect(screen.getByTestId('timeline')).toBeInTheDocument()
+    })
+  })
+
+  it('displays multiple back to home buttons', async () => {
+    render(
+      <MockRouter>
+        <OrderStatusPage />
+      </MockRouter>
+    )
+
+    await waitFor(() => {
+      const backButtons = screen.getAllByText('Back to Home')
+      expect(backButtons.length).toBeGreaterThan(0)
+    })
+  })
+
+  it('shows order ID in fallback error when both error and order are null', async () => {
+    // This tests the fallback case in the component
+    mockUseParams.mockReturnValue({ id: 'ORD-123' })
+    mockGetOrderStatus.mockResolvedValue(null) // No order data
+
+    render(
+      <MockRouter>
+        <OrderStatusPage />
+      </MockRouter>
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Order Not Found')).toBeInTheDocument()
+      // The fallback message should show the order ID
+      const errorMessage = screen.getByText((content, element) => {
+        return element?.tagName === 'P' && content.includes('ORD-123')
+      })
+      expect(errorMessage).toBeInTheDocument()
     })
   })
 })

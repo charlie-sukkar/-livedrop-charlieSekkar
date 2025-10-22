@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProduct, listProducts, getRelatedProducts } from '../lib/api';
+import { getProduct, getRelatedProducts } from '../lib/api'; // ✅ Removed listProducts import
 import type { Product } from '../lib/api';
 import { ProductLayout } from '../components/templates/ProductLayout';
 import { ProductDetail } from '../components/molecules/ProductDetail';
@@ -11,9 +11,9 @@ export const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,17 +27,17 @@ export const ProductPage: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        const [productData, allProductsData] = await Promise.all([
-          getProduct(id),
-          listProducts()
-        ]);
+        // ✅ Only fetch the product data
+        const productData = await getProduct(id);
 
         if (!productData) {
           setError('Product not found');
         } else {
           setProduct(productData);
+          // ✅ Get related products using the new async function
+          const related = await getRelatedProducts(productData._id, 3);
+          setRelatedProducts(related);
         }
-        setAllProducts(allProductsData);
       } catch (err) {
         setError('Failed to load product');
         console.error('Error fetching product:', err);
@@ -48,12 +48,6 @@ export const ProductPage: React.FC = () => {
 
     fetchData();
   }, [id]);
-
-
-  const relatedProducts = React.useMemo(() => {
-    if (!product || allProducts.length === 0) return [];
-    return getRelatedProducts(allProducts, product.id, product.tags, 3);
-  }, [product, allProducts]);
 
   if (loading) {
     return (
@@ -96,11 +90,9 @@ export const ProductPage: React.FC = () => {
     );
   }
 
-
   return (
     <ProductLayout
       relatedProducts={
-
         relatedProducts.length > 0 ? (
           <section aria-labelledby="related-products-heading" className="mt-12">
             <h2 id="related-products-heading" className="text-2xl font-bold text-gray-900 mb-6">
@@ -111,14 +103,12 @@ export const ProductPage: React.FC = () => {
         ) : null
       }
     >
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-
         <div className="flex justify-center">
           <div className="w-full max-w-md aspect-square bg-white rounded-lg shadow-lg overflow-hidden">
             <img
-              src={product.image}
-              alt={product.title}
+              src={product.imageUrl}
+              alt={product.name}
               className="w-full h-full object-cover"
               loading="eager" 
             />
@@ -137,7 +127,6 @@ export const ProductPage: React.FC = () => {
         </div>
       </div>
     </ProductLayout>
-
   );
 };
 
